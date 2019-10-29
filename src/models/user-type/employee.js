@@ -29,6 +29,15 @@ const employeeSchema = new Schema(
       unique: true,
       required: true
     },
+    department: {
+      type: String
+    },
+    address: {
+      type: String
+    },
+    job_title: {
+      type: String
+    },
     posts: [
       {
         type: Schema.Types.ObjectId,

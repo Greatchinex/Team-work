@@ -7,11 +7,14 @@ import "./config/db";
 import constants from "./config/constants";
 import typeDefs from "./graphql/schema";
 import resolvers from "./graphql/resolvers";
+import authMiddlewares from "./config/middlewares";
 
 const app = express();
 dotenv.config();
 const port = process.env.PORT;
 app.use(express.json());
+// initialize middleware function to protect certain resolvers
+authMiddlewares(app);
 
 // Apollo server set up for graphql (See Documentation)
 const schema = new ApolloServer({
