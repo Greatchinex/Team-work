@@ -72,13 +72,13 @@ export default {
       });
 
       if (!admin) {
-        throw new UserInputError("Incorrect Phone Number or Password");
+        throw new UserInputError("Incorrect email or Password");
       }
 
       // If User Exists then Compare Passwords
       const equalPassword = await bcrypt.compare(password, admin.password);
       if (!equalPassword) {
-        throw new UserInputError("Incorrect Phone Number or Password");
+        throw new UserInputError("Incorrect email or Password");
       }
 
       // Create token for user
@@ -115,6 +115,13 @@ export default {
           throw new ApolloError("Employee already exist");
         }
 
+        // The employeeId and password should be the same
+        if (employee_id !== password) {
+          throw new ApolloError(
+            "Please make sure the password is the same as the employee number"
+          );
+        }
+
         // Hash User Password Before saving user to DB
         const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -148,7 +155,7 @@ export default {
       }
     }
   ),
-  // Resolver for admin to edit profile
+  // Resolver for admin to edit profile (Private Route: Only for Admin)
   edit_admin_profile: combineResolvers(isAdmin, async (_, args, { Id }) => {
     try {
       let adminUpdate;
@@ -182,11 +189,11 @@ export default {
       throw err;
     }
   }),
-  // Resolver to load admin profile
+  // Resolver to load admin profile (Private route: Only for admin)
   admin_profile: combineResolvers(isAdmin, async (_, args) => {
     try {
       // Find the loggedin user
-      const adminProfile = await Admin.findById(args.educatorId);
+      const adminProfile = await Admin.findById(args.adminId);
 
       if (!adminProfile) {
         throw new ApolloError("User Does Not Exist");

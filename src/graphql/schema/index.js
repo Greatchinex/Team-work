@@ -12,6 +12,7 @@ export default gql`
     admin_login(email: String!, password: String!): Status
     employee_login(employee_id: String!, password: String!): Status
     admin_profile(adminId: ID!): Admin!
+    employee_profile(employeeId: ID!): Employee!
   }
 
   type Mutation {
@@ -29,6 +30,25 @@ export default gql`
       email: String
       phone_number: String
       password: String
+      file: Upload
+    ): Status
+    employee_change_password(
+      employeeId: ID!
+      old_password: String!
+      new_password: String!
+      confirm_password: String!
+    ): Status
+    update_employee_profile(
+      f_name: String
+      l_name: String
+      email: String
+      phone_number: String
+      password: String
+      employee_id: String
+      department: String
+      address: String
+      job_title: String
+      avatar: String
       file: Upload
     ): Status
     image(file: Upload): Status
