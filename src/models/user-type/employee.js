@@ -52,6 +52,10 @@ const employeeSchema = new Schema(
     user_type: {
       type: String
     },
+    no_of_posts: {
+      type: Number,
+      default: 0
+    },
     avatar: {
       type: String
     }

@@ -29,24 +29,6 @@ const adminSchema = new Schema({
       ref: "Employee"
     }
   ],
-  posts: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Post"
-    }
-  ],
-  gifs: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Gif"
-    }
-  ],
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment"
-    }
-  ],
   no_of_employees: {
     type: Number,
     default: 0

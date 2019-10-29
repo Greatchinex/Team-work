@@ -14,12 +14,26 @@ import Comment from "../../models/comments";
 export default {
   Date: GraphQLDateTime,
   Upload: GraphQLUpload,
+  // Resolving all Schema types with relationships to other Schema types
+  Admin: {
+    employees: (_, __) => Employee.find({ _id: _.employees })
+  },
+  Employee: {
+    posts: (_, __) => Post.find({ _id: _.posts })
+  },
+  Post: {
+    creator: (_, __) => Employee.findById(_.creator)
+  },
   // Exporting all Queries
   Query: {
     admin_login: adminResolver.admin_login,
     admin_profile: adminResolver.admin_profile,
     employee_login: employeeResolver.employee_login,
-    employee_profile: employeeResolver.employee_profile
+    employee_profile: employeeResolver.employee_profile,
+    post_with_id: postResolver.post_with_id,
+    view_personal_posts: postResolver.view_personal_posts,
+    view_all_posts: postResolver.view_all_posts,
+    view_post_by_category: postResolver.view_post_by_category
   },
   // Exporting all Mutations
   Mutation: {
@@ -28,6 +42,7 @@ export default {
     edit_admin_profile: adminResolver.edit_admin_profile,
     update_employee_profile: employeeResolver.update_employee_profile,
     employee_change_password: employeeResolver.employee_change_password,
-    image: postResolver.image
+    create_post: postResolver.create_post,
+    edit_post: postResolver.edit_post
   }
 };

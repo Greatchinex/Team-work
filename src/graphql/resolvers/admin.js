@@ -140,7 +140,10 @@ export default {
         // Increase the number of employees
         await Admin.findByIdAndUpdate(
           Id,
-          { $inc: { no_of_employees: +1 } },
+          {
+            $inc: { no_of_employees: +1 },
+            $push: { employees: savedEmploy }
+          },
           { new: true }
         );
 

@@ -16,49 +16,43 @@ import { processUpload } from "../../services/fileUploads";
 dotenv.config();
 
 export default {
-  employee_login: combineResolvers(
-    isEmployee,
-    async (_, { employee_id, password }) => {
-      try {
-        // Check for user
-        const findEmploy = await Employee.findOne({ employee_id });
+  employee_login: async (_, { employee_id, password }) => {
+    try {
+      // Check for user
+      const findEmploy = await Employee.findOne({ employee_id });
 
-        if (!findEmploy) {
-          throw new UserInputError("Incorrect employee number or password");
-        }
-
-        // If User Exists then Compare Passwords
-        const equalPassword = await bcrypt.compare(
-          password,
-          findEmploy.password
-        );
-        if (!equalPassword) {
-          throw new UserInputError("Incorrect employee number or password");
-        }
-
-        // Create token for user
-        const token = jwt.sign(
-          {
-            userId: findEmploy._id,
-            userType: findEmploy.user_type
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "30d" // token will expire in 30 days
-          }
-        );
-
-        // Response
-        return {
-          message: token,
-          value: true,
-          user_1: findEmploy
-        };
-      } catch (err) {
-        throw err;
+      if (!findEmploy) {
+        throw new UserInputError("Incorrect employee number or password");
       }
+
+      // If User Exists then Compare Passwords
+      const equalPassword = await bcrypt.compare(password, findEmploy.password);
+      if (!equalPassword) {
+        throw new UserInputError("Incorrect employee number or password");
+      }
+
+      // Create token for user
+      const token = jwt.sign(
+        {
+          userId: findEmploy._id,
+          userType: findEmploy.user_type
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "30d" // token will expire in 30 days
+        }
+      );
+
+      // Response
+      return {
+        message: token,
+        value: true,
+        user_1: findEmploy
+      };
+    } catch (err) {
+      throw err;
     }
-  ),
+  },
   // Resolver for employee to edit profile (Private route: Only 4 employees)
   update_employee_profile: combineResolvers(
     isEmployee,

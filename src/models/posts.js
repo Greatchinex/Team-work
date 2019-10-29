@@ -11,12 +11,14 @@ const postSchema = new Schema(
       required: true
     },
     image: {
-      type: String,
-      required: true
+      type: String
     },
     flagged_as_inappropriate: {
       type: Boolean,
       default: false
+    },
+    category: {
+      type: String
     },
     creator: {
       type: Schema.Types.ObjectId,

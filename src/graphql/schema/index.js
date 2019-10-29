@@ -13,6 +13,14 @@ export default gql`
     employee_login(employee_id: String!, password: String!): Status
     admin_profile(adminId: ID!): Admin!
     employee_profile(employeeId: ID!): Employee!
+    post_with_id(postId: ID!): Post!
+    view_all_posts(cursor: String, limit: Int): PostConnection!
+    view_personal_posts(cursor: String, limit: Int): PostConnection!
+    view_post_by_category(
+      category: String!
+      cursor: String
+      limit: Int
+    ): PostConnection!
   }
 
   type Mutation {
@@ -43,15 +51,24 @@ export default gql`
       l_name: String
       email: String
       phone_number: String
-      password: String
-      employee_id: String
       department: String
       address: String
       job_title: String
       avatar: String
       file: Upload
     ): Status
-    image(file: Upload): Status
+    create_post(
+      title: String!
+      content: String!
+      file: Upload
+      category: String!
+    ): Post!
+    edit_post(
+      title: String
+      content: String
+      file: Upload
+      category: String
+    ): Post!
   }
 
   type Status {
@@ -69,9 +86,6 @@ export default gql`
     phone_number: String!
     password: String!
     employees: [Employee!]
-    posts: [Post!]
-    gifs: [Gif]
-    comments: [Comment!]
     no_of_employees: Int
     user_type: String
     avatar: String
@@ -91,6 +105,7 @@ export default gql`
     posts: [Post!]
     gifs: [Gif]
     comments: [Comment!]
+    no_of_posts: Int
     user_type: String
     avatar: String
     createdAt: Date
@@ -102,6 +117,7 @@ export default gql`
     content: String!
     image: String
     flagged_as_inappropriate: Boolean
+    category: String!
     creator: Employee!
     comments: [Comment!]
     createdAt: Date
@@ -126,5 +142,15 @@ export default gql`
     creator: Employee!
     createdAt: Date
     updatedAt: Date
+  }
+
+  type PostConnection {
+    edges: [Post!]
+    pageInfo: PageInfo!
+  }
+
+  type PageInfo {
+    hasNextPage: Boolean!
+    endCursor: Date!
   }
 `;
