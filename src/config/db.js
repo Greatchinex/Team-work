@@ -7,7 +7,10 @@ dotenv.config();
 mongoose.Promise = global.Promise; // To Use Promises With Mongoose
 
 // Connect to DB
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true }); // { useNewUrlParser: true }: To remove depreciation Warnings
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}); // { useNewUrlParser: true }: To remove depreciation Warnings
 
 // Message On if Successfully Connected to DB
 mongoose.connection.on("connected", () => {
