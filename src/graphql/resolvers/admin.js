@@ -49,7 +49,7 @@ export default {
       });
 
       // Set the usertype to admin
-      newAdmin.user_type === "admin";
+      newAdmin.user_type = "admin";
 
       // Save user
       const savedAdmin = await newAdmin.save();
@@ -112,7 +112,7 @@ export default {
         const employ = await Employee.findOne({ employee_id });
 
         if (employ) {
-          throw new ApolloError("Employee already exist");
+          throw new ApolloError("Employee with Id already exist");
         }
 
         // The employeeId and password should be the same
@@ -132,7 +132,7 @@ export default {
         });
 
         // Set the usertype to emloyee
-        employ.user_type === "employee";
+        newEmploy.user_type = "employee";
 
         // Save employee
         const savedEmploy = await newEmploy.save();

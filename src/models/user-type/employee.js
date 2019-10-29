@@ -3,26 +3,19 @@ import mongoose, { Schema } from "mongoose";
 const employeeSchema = new Schema(
   {
     f_name: {
-      type: String,
-      required: true
+      type: String
     },
     l_name: {
-      type: String,
-      required: true
+      type: String
     },
     phone_number: {
-      type: String,
-      unique: true,
-      required: true
+      type: String
     },
     email: {
-      type: String,
-      required: true,
-      unique: true
+      type: String
     },
     password: {
-      type: String,
-      required: true
+      type: String
     },
     employee_id: {
       type: String,

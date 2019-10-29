@@ -79,10 +79,10 @@ export default gql`
 
   type Employee {
     _id: ID!
-    f_name: String!
-    l_name: String!
-    email: String!
-    phone_number: String!
+    f_name: String
+    l_name: String
+    email: String
+    phone_number: String
     password: String!
     employee_id: String!
     department: String
@@ -91,7 +91,6 @@ export default gql`
     posts: [Post!]
     gifs: [Gif]
     comments: [Comment!]
-    no_of_employees: Int
     user_type: String
     avatar: String
     createdAt: Date
