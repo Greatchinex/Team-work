@@ -10,7 +10,7 @@ export const isAuthenticated = (_, __, { logged_in_user }) =>
   logged_in_user ? skip : new AuthenticationError("Authorization Denied");
 
 // Check if user is an admin (Role based authentication)
-export const isEducator = combineResolvers(
+export const isAdmin = combineResolvers(
   isAuthenticated,
   (_, __, { user_type }) =>
     user_type === "admin"

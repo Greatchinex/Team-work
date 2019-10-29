@@ -9,6 +9,8 @@ import Employee from "../../models/user-type/employee";
 import Post from "../../models/posts";
 import Gif from "../../models/gifs";
 import Comment from "../../models/comments";
+import { isAdmin } from "../../services/authorization";
+import { processUpload } from "../../services/fileUploads";
 
 dotenv.config();
 
@@ -100,5 +102,99 @@ export default {
     } catch (err) {
       throw err;
     }
-  }
+  },
+  // Resolver for admin to create employees on the platform
+  create_employee: combineResolvers(
+    isAdmin,
+    async (_, { employee_id, password }, { Id }) => {
+      try {
+        // Check if employees is already created
+        const employ = await Employee.findOne({ employee_id });
+
+        if (employ) {
+          throw new ApolloError("Employee already exist");
+        }
+
+        // Hash User Password Before saving user to DB
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        // create the employee
+        const newEmploy = new Employee({
+          employee_id,
+          password: hashedPassword
+        });
+
+        // Set the usertype to emloyee
+        employ.user_type === "employee";
+
+        // Save employee
+        const savedEmploy = await newEmploy.save();
+
+        // Increase the number of employees
+        await Admin.findByIdAndUpdate(
+          Id,
+          { $inc: { no_of_employees: +1 } },
+          { new: true }
+        );
+
+        // Response
+        return {
+          message: "Employee Created Successfully",
+          value: true,
+          user_1: savedEmploy
+        };
+      } catch (err) {
+        throw err;
+      }
+    }
+  ),
+  // Resolver for admin to edit profile
+  edit_admin_profile: combineResolvers(isAdmin, async (_, args, { Id }) => {
+    try {
+      let adminUpdate;
+      // Check if the admin uploaded a file(Profile Picture)
+      if (args.file) {
+        let uploadData = await processUpload(args.file);
+
+        // Update the admin account with the avatar
+        adminUpdate = await Admin.findByIdAndUpdate(
+          Id,
+          {
+            $set: {
+              args,
+              avatar: uploadData.path
+            }
+          },
+          { new: true }
+        );
+      } else {
+        // Update user account
+        adminUpdate = await Admin.findByIdAndUpdate(Id, args, { new: true });
+      }
+
+      // Response
+      return {
+        message: "Account updated successfully",
+        value: true,
+        user: adminUpdate
+      };
+    } catch (err) {
+      throw err;
+    }
+  }),
+  // Resolver to load admin profile
+  admin_profile: combineResolvers(isAdmin, async (_, args) => {
+    try {
+      // Find the loggedin user
+      const adminProfile = await Admin.findById(args.educatorId);
+
+      if (!adminProfile) {
+        throw new ApolloError("User Does Not Exist");
+      }
+
+      return adminProfile;
+    } catch (err) {
+      throw err;
+    }
+  })
 };

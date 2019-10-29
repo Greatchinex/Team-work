@@ -11,6 +11,7 @@ export default gql`
   type Query {
     admin_login(email: String!, password: String!): Status
     employee_login(employee_id: String!, password: String!): Status
+    admin_profile(adminId: ID!): Admin!
   }
 
   type Mutation {
@@ -22,6 +23,14 @@ export default gql`
       password: String!
     ): Status
     create_employee(employee_id: String!, password: String!): Status
+    edit_admin_profile(
+      f_name: String
+      l_name: String
+      email: String
+      phone_number: String
+      password: String
+      file: Upload
+    ): Status
     image(file: Upload): Status
   }
 
@@ -29,9 +38,11 @@ export default gql`
     message: String
     value: Boolean
     user: Admin
+    user_1: Employee
   }
 
   type Admin {
+    _id: ID!
     f_name: String!
     l_name: String!
     email: String!
@@ -47,6 +58,7 @@ export default gql`
   }
 
   type Employee {
+    _id: ID!
     f_name: String!
     l_name: String!
     email: String!
@@ -66,6 +78,7 @@ export default gql`
   }
 
   type Post {
+    _id: ID!
     title: String!
     content: String!
     image: String
@@ -77,6 +90,7 @@ export default gql`
   }
 
   type Gif {
+    _id: ID!
     gif: String!
     title: String
     flagged_as_inappropriate: Boolean
@@ -87,6 +101,7 @@ export default gql`
   }
 
   type Comment {
+    _id: ID!
     comment: String!
     flagged_as_inappropriate: Boolean
     creator: Employee!

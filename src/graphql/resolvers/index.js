@@ -15,11 +15,14 @@ export default {
   Upload: GraphQLUpload,
   // Exporting all Queries
   Query: {
-    admin_login: adminResolver.admin_login
+    admin_login: adminResolver.admin_login,
+    admin_profile: adminResolver.admin_profile
   },
   // Exporting all Mutations
   Mutation: {
     create_admin: adminResolver.create_admin,
+    create_employee: adminResolver.create_employee,
+    edit_admin_profile: adminResolver.edit_admin_profile,
     image: postResolver.image
   }
 };
