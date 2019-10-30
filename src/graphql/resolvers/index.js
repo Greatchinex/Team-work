@@ -47,7 +47,11 @@ export default {
     view_post_by_category: postResolver.view_post_by_category,
     gif_with_id: gifResolver.gif_with_id,
     view_personal_gifs: gifResolver.view_personal_gifs,
-    view_all_gifs: gifResolver.view_all_gifs
+    view_all_gifs: gifResolver.view_all_gifs,
+    view_flagged_posts: adminResolver.view_flagged_posts,
+    view_flagged_gifs: adminResolver.view_flagged_gifs,
+    view_flagged_comments: adminResolver.view_flagged_comments,
+    view_employees: adminResolver.view_employees
   },
   // Exporting all Mutations
   Mutation: {

@@ -24,6 +24,10 @@ export default gql`
     gif_with_id(gifId: ID!): Gif!
     view_all_gifs(cursor: String, limit: Int): GifConnection!
     view_personal_gifs(cursor: String, limit: Int): GifConnection!
+    view_flagged_posts(cursor: String, limit: Int): PostConnection!
+    view_flagged_gifs(cursor: String, limit: Int): GifConnection!
+    view_flagged_comments(cursor: String, limit: Int): CommentConnection!
+    view_employees(cursor: String, limit: Int): EmployeeConnection!
   }
 
   type Mutation {
@@ -153,6 +157,11 @@ export default gql`
     updatedAt: Date
   }
 
+  type EmployeeConnection {
+    edges: [Employee!]
+    pageInfo: PageInfo!
+  }
+
   type PostConnection {
     edges: [Post!]
     pageInfo: PageInfo!
@@ -160,6 +169,11 @@ export default gql`
 
   type GifConnection {
     edges: [Gif!]
+    pageInfo: PageInfo!
+  }
+
+  type CommentConnection {
+    edges: [Comment!]
     pageInfo: PageInfo!
   }
 

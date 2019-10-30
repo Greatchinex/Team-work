@@ -206,5 +206,196 @@ export default {
     } catch (err) {
       throw err;
     }
-  })
+  }),
+  // Resolver for admin to view posts flagged as inappropriate
+  view_flagged_posts: combineResolvers(
+    isAdmin,
+    async (_, { cursor, limit }) => {
+      try {
+        let posts;
+        if (cursor) {
+          posts = await Post.find({
+            flagged_as_inappropriate: true,
+            createdAt: { $lt: cursor }
+          })
+            .limit(limit + 1)
+            .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+          // Check if the list of posts has a next page in the query
+          const hasNextPage = posts.length > limit;
+          const edges = hasNextPage ? posts.slice(0, -1) : posts;
+
+          // Response
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage,
+              endCursor: edges[edges.length - 1].createdAt
+            }
+          };
+        } else if (!cursor) {
+          posts = await Post.find({
+            flagged_as_inappropriate: true
+          })
+            .limit(limit + 1)
+            .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+          // Check if the list of posts has a next page in the query
+          const hasNextPage = posts.length > limit;
+          const edges = hasNextPage ? posts.slice(0, -1) : posts;
+
+          // Response
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage,
+              endCursor: edges[edges.length - 1].createdAt
+            }
+          };
+        }
+      } catch (err) {
+        throw err;
+      }
+    }
+  ),
+  // Resolver for admin to view gifs flagged as inappropriate
+  view_flagged_gifs: combineResolvers(isAdmin, async (_, { cursor, limit }) => {
+    try {
+      let gifs;
+      if (cursor) {
+        gifs = await Gif.find({
+          flagged_as_inappropriate: true,
+          createdAt: { $lt: cursor }
+        })
+          .limit(limit + 1)
+          .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+        // Check if the list of posts has a next page in the query
+        const hasNextPage = gifs.length > limit;
+        const edges = hasNextPage ? gifs.slice(0, -1) : gifs;
+
+        // Response
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor: edges[edges.length - 1].createdAt
+          }
+        };
+      } else if (!cursor) {
+        gifs = await Gif.find({ flagged_as_inappropriate: true })
+          .limit(limit + 1)
+          .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+        // Check if the list of posts has a next page in the query
+        const hasNextPage = gifs.length > limit;
+        const edges = hasNextPage ? gifs.slice(0, -1) : gifs;
+
+        // Response
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor: edges[edges.length - 1].createdAt
+          }
+        };
+      }
+    } catch (err) {
+      throw err;
+    }
+  }),
+  // Resolver for admin to view all employees
+  view_employees: combineResolvers(isAdmin, async (_, { cursor, limit }) => {
+    try {
+      let employee;
+      if (cursor) {
+        employee = await Employee.find({
+          createdAt: { $lt: cursor }
+        })
+          .limit(limit + 1)
+          .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+        // Check if the list of posts has a next page in the query
+        const hasNextPage = employee.length > limit;
+        const edges = hasNextPage ? employee.slice(0, -1) : employee;
+
+        // Response
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor: edges[edges.length - 1].createdAt
+          }
+        };
+      } else if (!cursor) {
+        employee = await Employee.find()
+          .limit(limit + 1)
+          .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+        // Check if the list of posts has a next page in the query
+        const hasNextPage = employee.length > limit;
+        const edges = hasNextPage ? employee.slice(0, -1) : employee;
+
+        // Response
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor: edges[edges.length - 1].createdAt
+          }
+        };
+      }
+    } catch (err) {
+      throw err;
+    }
+  }),
+  // Resolver for admin to view comments flagged as inappropriate
+  view_flagged_comments: combineResolvers(
+    isAdmin,
+    async (_, { cursor, limit }) => {
+      try {
+        let comments;
+        if (cursor) {
+          comments = await Comment.find({
+            flagged_as_inappropriate: true,
+            createdAt: { $lt: cursor }
+          })
+            .limit(limit + 1)
+            .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+          // Check if the list of posts has a next page in the query
+          const hasNextPage = comments.length > limit;
+          const edges = hasNextPage ? comments.slice(0, -1) : comments;
+
+          // Response
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage,
+              endCursor: edges[edges.length - 1].createdAt
+            }
+          };
+        } else if (!cursor) {
+          comments = await Comment.find({ flagged_as_inappropriate: true })
+            .limit(limit + 1)
+            .sort({ createdAt: -1 }); // -1: sort by descending order(from newest to oldest)
+
+          // Check if the list of posts has a next page in the query
+          const hasNextPage = comments.length > limit;
+          const edges = hasNextPage ? comments.slice(0, -1) : comments;
+
+          // Response
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage,
+              endCursor: edges[edges.length - 1].createdAt
+            }
+          };
+        }
+      } catch (err) {
+        throw err;
+      }
+    }
+  )
 };
