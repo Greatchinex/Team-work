@@ -397,5 +397,119 @@ export default {
         throw err;
       }
     }
+  ),
+  // Resolver for admin to delete a flagged post(privete route: Only 4 admin)
+  delete_flagged_post: combineResolvers(
+    isAdmin,
+    async (_, { postId }, { Id }) => {
+      try {
+        // Find post
+        const postCheck = await Post.findById(postId);
+
+        if (!postCheck) {
+          throw new ApolloError("Post not found");
+        }
+
+        // Check if the post was flagged as inappropriate
+        if (postCheck.flagged_as_inappropriate === false) {
+          throw new ApolloError(
+            "This post has not been flagged, You cannot delete it"
+          );
+        }
+
+        // Delete post
+        const deletedPost = await Post.findByIdAndRemove(postId);
+
+        await Employee.findByIdAndUpdate(
+          postCheck.creator,
+          { $pull: { posts: deletedPost._id } },
+          { new: true }
+        );
+
+        // Response
+        return {
+          message: "Post Deleted Successfully",
+          value: true
+        };
+      } catch (err) {
+        throw err;
+      }
+    }
+  ),
+  // Resolver for admin to delete a flagged gif(privete route: Only 4 admin)
+  delete_flagged_gif: combineResolvers(isAdmin, async (_, { gifId }) => {
+    try {
+      // Find gif
+      const gifCheck = await Gif.findById(gifId);
+
+      if (!gifCheck) {
+        throw new ApolloError("Gif not found");
+      }
+
+      // Check if the gif was flagged as inappropriate
+      if (gifCheck.flagged_as_inappropriate === false) {
+        throw new ApolloError(
+          "This Gif has not been flagged, You cannot delete it"
+        );
+      }
+
+      // Delete Gif
+      const deletedGif = await Gif.findByIdAndRemove(gifId);
+
+      await Employee.findByIdAndUpdate(
+        gifCheck.creator,
+        { $pull: { gifs: deletedGif._id } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message: "Gif Deleted Successfully",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
+  }),
+  // Resolver for admin to delete a flagged comment(privete route: Only 4 admin)
+  delete_flagged_comment: combineResolvers(
+    isAdmin,
+    async (_, { commentId }) => {
+      try {
+        // Find gif
+        const commentCheck = await Comment.findById(commentId);
+
+        if (!commentCheck) {
+          throw new ApolloError("Comment not found");
+        }
+
+        console.log(commentCheck);
+        console.log(commentCheck.flagged_as_inappropriate);
+
+        // Check if the gif was flagged as inappropriate
+        if (commentCheck.flagged_as_inappropriate === false) {
+          throw new ApolloError(
+            "This Comment has not been flagged, You cannot delete it"
+          );
+        }
+
+        // Delete Gif
+        const deletedComment = await Comment.findByIdAndRemove(commentId);
+
+        await Employee.findByIdAndUpdate(
+          commentCheck.creator,
+          { $pull: { comments: deletedComment._id } },
+          { new: true }
+        );
+
+        // Response
+        return {
+          message: "Comment Deleted Successfully",
+          value: true
+        };
+      } catch (err) {
+        throw err;
+      }
+    }
   )
 };

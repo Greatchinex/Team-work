@@ -84,6 +84,9 @@ export default gql`
     flag_post(postId: ID!): Status
     delete_post(postId: ID!): Status
     delete_gif(gifId: ID!): Status
+    delete_flagged_post(postId: ID!): Status
+    delete_flagged_gif(gifId: ID!): Status
+    delete_flagged_comment(commentId: ID!): Status
   }
 
   type Status {
