@@ -7,8 +7,7 @@ const gifSchema = new Schema(
       required: true
     },
     title: {
-      type: String,
-      required: true
+      type: String
     },
     flagged_as_inappropriate: {
       type: Boolean,

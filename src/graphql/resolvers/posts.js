@@ -1,4 +1,4 @@
-import { ApolloError, UserInputError } from "apollo-server-express";
+import { ApolloError } from "apollo-server-express";
 import dotenv from "dotenv";
 import { combineResolvers } from "graphql-resolvers";
 
@@ -124,7 +124,7 @@ export default {
       const postCheck = await Post.findById(postId);
 
       if (!postCheck) {
-        throw new ApolloError("Course does not exists");
+        throw new ApolloError("Post does not exists");
       }
 
       return postCheck;

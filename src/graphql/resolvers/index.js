@@ -4,6 +4,7 @@ import { GraphQLUpload } from "graphql-upload";
 import adminResolver from "./admin";
 import postResolver from "./posts";
 import employeeResolver from "./employee";
+import gifResolver from "./gifs";
 
 import Admin from "../../models/user-type/admin";
 import Employee from "../../models/user-type/employee";
@@ -19,9 +20,13 @@ export default {
     employees: (_, __) => Employee.find({ _id: _.employees })
   },
   Employee: {
-    posts: (_, __) => Post.find({ _id: _.posts })
+    posts: (_, __) => Post.find({ _id: _.posts }),
+    gifs: (_, __) => Gif.find({ _id: _.gifs })
   },
   Post: {
+    creator: (_, __) => Employee.findById(_.creator)
+  },
+  Gif: {
     creator: (_, __) => Employee.findById(_.creator)
   },
   // Exporting all Queries
@@ -33,7 +38,10 @@ export default {
     post_with_id: postResolver.post_with_id,
     view_personal_posts: postResolver.view_personal_posts,
     view_all_posts: postResolver.view_all_posts,
-    view_post_by_category: postResolver.view_post_by_category
+    view_post_by_category: postResolver.view_post_by_category,
+    gif_with_id: gifResolver.gif_with_id,
+    view_personal_gifs: gifResolver.view_personal_gifs,
+    view_all_gifs: gifResolver.view_all_gifs
   },
   // Exporting all Mutations
   Mutation: {
@@ -43,6 +51,7 @@ export default {
     update_employee_profile: employeeResolver.update_employee_profile,
     employee_change_password: employeeResolver.employee_change_password,
     create_post: postResolver.create_post,
-    edit_post: postResolver.edit_post
+    edit_post: postResolver.edit_post,
+    create_gif: gifResolver.create_gif
   }
 };

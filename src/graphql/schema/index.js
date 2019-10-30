@@ -21,6 +21,9 @@ export default gql`
       cursor: String
       limit: Int
     ): PostConnection!
+    gif_with_id(gifId: ID!): Gif!
+    view_all_gifs(cursor: String, limit: Int): GifConnection!
+    view_personal_gifs(cursor: String, limit: Int): GifConnection!
   }
 
   type Mutation {
@@ -69,6 +72,7 @@ export default gql`
       file: Upload
       category: String
     ): Post!
+    create_gif(file: Upload, title: String): Gif!
   }
 
   type Status {
@@ -146,6 +150,11 @@ export default gql`
 
   type PostConnection {
     edges: [Post!]
+    pageInfo: PageInfo!
+  }
+
+  type GifConnection {
+    edges: [Gif!]
     pageInfo: PageInfo!
   }
 
