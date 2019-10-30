@@ -178,5 +178,46 @@ export default {
         throw err;
       }
     }
+  ),
+  // Resolver to comment on a gif
+  gif_comment: combineResolvers(
+    isEmployee,
+    async (_, { gifId, comment }, { Id }) => {
+      try {
+        // Find the gif
+        const gifFind = await Gif.findById(gifId);
+
+        if (!gifFind) {
+          throw new ApolloError("Gif not found");
+        }
+
+        // Create the comment and save it
+        const newComment = new Comment({
+          comment,
+          creator: Id
+        });
+
+        const savedComment = await newComment.save();
+
+        // Update the gif with the comment
+        await Gif.findByIdAndUpdate(
+          gifId,
+          { $push: { comments: savedComment } },
+          { new: true }
+        );
+
+        // Update the user account with the comment
+        await Employee.findByIdAndUpdate(
+          Id,
+          { $push: { comments: savedComment } },
+          { new: true }
+        );
+
+        // Response
+        return savedComment;
+      } catch (err) {
+        throw err;
+      }
+    }
   )
 };

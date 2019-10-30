@@ -21,12 +21,18 @@ export default {
   },
   Employee: {
     posts: (_, __) => Post.find({ _id: _.posts }),
-    gifs: (_, __) => Gif.find({ _id: _.gifs })
+    gifs: (_, __) => Gif.find({ _id: _.gifs }),
+    comments: (_, __) => Comment.find({ _id: _.comments })
   },
   Post: {
-    creator: (_, __) => Employee.findById(_.creator)
+    creator: (_, __) => Employee.findById(_.creator),
+    comments: (_, __) => Comment.find({ _id: _.comments })
   },
   Gif: {
+    creator: (_, __) => Employee.findById(_.creator),
+    comments: (_, __) => Comment.find({ _id: _.comments })
+  },
+  Comment: {
     creator: (_, __) => Employee.findById(_.creator)
   },
   // Exporting all Queries
@@ -52,6 +58,8 @@ export default {
     employee_change_password: employeeResolver.employee_change_password,
     create_post: postResolver.create_post,
     edit_post: postResolver.edit_post,
-    create_gif: gifResolver.create_gif
+    create_gif: gifResolver.create_gif,
+    post_comment: postResolver.post_comment,
+    gif_comment: gifResolver.gif_comment
   }
 };
