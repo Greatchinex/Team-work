@@ -12,16 +12,16 @@ In the root directory create a <code> .env </code> File
 
 <br> You can add the following environment variable in your .env file
 
-<code> PORT = <Your port number> </code>
-<code> DB_URL = <Your database url> </code>
-<code> JWT_SECRET = <Your jwt secret> </code>
-<code> CLOUD_NAME = <Your cloudinary cloud name> </code>
-<code> CLOUDINARY_API_KEY = <Your cloudinary api key> </code>
-<code> CLOUDINARY_API_SECRET = <Your cloudinary api secret> </code>
+<code> PORT = Your port number </code>
+<br> <code> DB_URL = Your database url </code>
+<br> <code> JWT_SECRET = Your jwt secret </code>
+<br> <code> CLOUD_NAME = Your cloudinary cloud name </code>
+<br> <code> CLOUDINARY_API_KEY = Your cloudinary api key </code>
+<br> <code> CLOUDINARY_API_SECRET = Your cloudinary api secret </code>
 
 ## Graphql playground testing
 
-You can use the Graphiql app for testing but i suggest using Altair app for Manually
+You can use the <code>Graphiql</code> app for testing but i suggest using <code>Altair</code> app for Manually
 testing your api because it is generally a lot easier when testing for file uploads
 
 <br> PS: This project was done with the following tools:
