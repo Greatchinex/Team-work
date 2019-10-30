@@ -67,6 +67,8 @@ export default {
     gif_comment: gifResolver.gif_comment,
     flag_post: postResolver.flag_post,
     flag_gif: gifResolver.flag_gif,
-    flag_comment: employeeResolver.flag_comment
+    flag_comment: employeeResolver.flag_comment,
+    delete_post: postResolver.delete_post,
+    delete_gif: gifResolver.delete_gif
   }
 };

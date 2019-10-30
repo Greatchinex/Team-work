@@ -246,5 +246,40 @@ export default {
     } catch (err) {
       throw err;
     }
+  }),
+  // Resolver for user to delete his/her gif
+  delete_gif: combineResolvers(isEmployee, async (_, { gifId }, { Id }) => {
+    try {
+      // Find gif
+      const gifFind = await Gif.findById(gifId);
+
+      if (!gifFind) {
+        throw new ApolloError("Gif does exist");
+      }
+
+      // Check if user trying to delete gif created the gif
+      if (gifFind.creator.toString() !== Id.toString()) {
+        throw new ApolloError(
+          "You did not create this gif and cannot delete it"
+        );
+      }
+
+      // Delete Gif
+      const deletedGif = await Gif.findByIdAndRemove(gifId);
+
+      await Employee.findByIdAndUpdate(
+        Id,
+        { $pull: { gifs: deletedGif._id } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message: "Gif was deleted successfully",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
   })
 };

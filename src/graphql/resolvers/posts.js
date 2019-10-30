@@ -355,5 +355,40 @@ export default {
     } catch (err) {
       throw err;
     }
+  }),
+  // Resolver for user to delete his/her posts
+  delete_post: combineResolvers(isEmployee, async (_, { postId }, { Id }) => {
+    try {
+      // find post
+      const findPost = await Post.findById(postId);
+
+      if (!findPost) {
+        throw new ApolloError("Post does not exist");
+      }
+
+      // Check if user trying to delete post created the post
+      if (findPost.creator.toString() !== Id.toString()) {
+        throw new ApolloError(
+          "You did not create this post and cannot delete it"
+        );
+      }
+
+      // Delete post
+      const deletedPost = await Post.findByIdAndRemove(postId);
+
+      await Employee.findByIdAndUpdate(
+        Id,
+        { $pull: { posts: deletedPost._id } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message: "Post was deleted successfully",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
   })
 };
