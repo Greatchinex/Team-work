@@ -483,9 +483,6 @@ export default {
           throw new ApolloError("Comment not found");
         }
 
-        console.log(commentCheck);
-        console.log(commentCheck.flagged_as_inappropriate);
-
         // Check if the gif was flagged as inappropriate
         if (commentCheck.flagged_as_inappropriate === false) {
           throw new ApolloError(
