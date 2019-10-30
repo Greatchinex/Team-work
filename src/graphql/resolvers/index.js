@@ -60,6 +60,9 @@ export default {
     edit_post: postResolver.edit_post,
     create_gif: gifResolver.create_gif,
     post_comment: postResolver.post_comment,
-    gif_comment: gifResolver.gif_comment
+    gif_comment: gifResolver.gif_comment,
+    flag_post: postResolver.flag_post,
+    flag_gif: gifResolver.flag_gif,
+    flag_comment: employeeResolver.flag_comment
   }
 };

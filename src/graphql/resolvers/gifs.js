@@ -219,5 +219,32 @@ export default {
         throw err;
       }
     }
-  )
+  ),
+  // Flag gif as inappropriate
+  flag_gif: combineResolvers(isEmployee, async (_, { gifId }) => {
+    try {
+      // Find gif
+      const gifFind = await Gif.findById(gifId);
+
+      if (!gifFind) {
+        throw new ApolloError("Gif was not found");
+      }
+
+      // Flag gif as inappropriate
+      await Gif.findByIdAndUpdate(
+        gifId,
+        { $set: { flagged_as_inappropriate: true } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message:
+          "You have flagged this gif, we will review it and if it breaks our rules it will be deleted",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
+  })
 };

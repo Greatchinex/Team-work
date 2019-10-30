@@ -72,9 +72,12 @@ export default gql`
       file: Upload
       category: String
     ): Post!
-    create_gif(file: Upload, title: String): Gif!
+    create_gif(file: Upload!, title: String): Gif!
     post_comment(postId: ID!, comment: String!): Comment!
     gif_comment(gifId: ID!, comment: String!): Comment!
+    flag_comment(commentId: ID!): Status
+    flag_gif(gifId: ID!): Status
+    flag_post(postId: ID!): Status
   }
 
   type Status {

@@ -151,5 +151,32 @@ export default {
         throw err;
       }
     }
-  )
+  ),
+  // Flag comment as inappropriate
+  flag_comment: combineResolvers(isEmployee, async (_, { commentId }) => {
+    try {
+      // Find comment
+      const commentFind = await Comment.findById(commentId);
+
+      if (!commentFind) {
+        throw new ApolloError("Comment not found");
+      }
+
+      // Flag comment as inappropriate
+      await Comment.findByIdAndUpdate(
+        commentId,
+        { $set: { flagged_as_inappropriate: true } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message:
+          "You have flagged this comment, we will review it and if it breaks our rules it will be deleted",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
+  })
 };

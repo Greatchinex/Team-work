@@ -328,5 +328,32 @@ export default {
         throw err;
       }
     }
-  )
+  ),
+  // Flag post as inappropriate
+  flag_post: combineResolvers(isEmployee, async (_, { postId }, { Id }) => {
+    try {
+      // find post
+      const postCheck = await Post.findById(postId);
+
+      if (!postCheck) {
+        throw new ApolloError("Post not found");
+      }
+
+      // Flag the post as inappropriate
+      await Post.findByIdAndUpdate(
+        postId,
+        { $set: { flagged_as_inappropriate: true } },
+        { new: true }
+      );
+
+      // Response
+      return {
+        message:
+          "You have flagged this post, we will review it and if it breaks our rules it will be deleted",
+        value: true
+      };
+    } catch (err) {
+      throw err;
+    }
+  })
 };
